@@ -1,0 +1,29 @@
+#!/bin/bash
+function errorHander()
+{
+	echo "smake: smake didn't successfully compile because some errors arose"
+	exit 1
+}
+function comp()
+{
+	filename=$1
+#	echo $filename
+#	echo "============="
+	filepath=./$filename
+#	echo $filepath
+	#echo $filename
+	gcc -c ${filename}
+	filename1="${filename%\.*}"
+#	echo $filename1
+#	echo $filename1
+	echo $filename
+	filename2=./$filename1".o"	
+#	gcc $filename2 -o $filename
+}
+case $1 in 
+	"compile" )	comp $2  ||  errorHander 
+		;;
+	* ) echo 1
+		;;
+esac
+
