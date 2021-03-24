@@ -1,10 +1,12 @@
 #!/bin/bash
+
 #处理编译出错的情况
 function compile_ErrorHander()
 {
 	echo "smake: smake didn't successfully compile because some errors arose"
 	exit 1
 }
+
 #根据输入的文件名生成目标文件和可执行文件
 function comp()
 {
@@ -41,6 +43,7 @@ function inst()
 		origin=$3
 	done
 }
+
 #清理当前目录下所有的.o目标文件 同时根据用户的输入来判断删除二进制文件
 function clean(){
 	flag=1
@@ -73,6 +76,7 @@ function clean(){
 	done
 					
 }
+
 #输出帮助
 function gethelp()
 {
@@ -80,7 +84,7 @@ function gethelp()
 }
 
 
-
+#程序入口
 case $1 in 
 	"compile" | "Compile" )	comp $2  ||  compile_errorHander 
 		;;
