@@ -37,7 +37,7 @@ function inst()
                 	echo "smake: This Installfile:$origin doesn't exist!"
 			exit 1
 		else
-			install $origin $dest
+			install $origin $dest &> /dev/null
 		fi
 		shift
 		origin=$3
