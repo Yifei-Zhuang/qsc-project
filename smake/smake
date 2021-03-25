@@ -19,7 +19,7 @@ compile()
                 done
 }
 
-inst()
+myInstall()
 {
 	#dest为目标,origin为待处理的文件的路径
 	dest="$2"
@@ -88,7 +88,7 @@ gethelp()
 case $1 in 
 	"compile" | "Compile" )	compile  ||  compile_errorHander 
 		;;
-	"install" | "Install" ) inst $@
+	"install" | "Install" ) myInstall $@
 		;;
 	"clean" | "Clean" ) clean
 		;;
