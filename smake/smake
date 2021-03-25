@@ -1,25 +1,25 @@
 #!/bin/bash
 
 #处理编译出错的情况
-function compile_ErrorHander()
+compile_ErrorHander()
 {
 	echo "smake: smake didn't successfully compile because some errors arose"
 	exit 1
 }
 
 #根据输入的文件名生成目标文件和可执行文件
-function comp()
+comp()
 {
 	filename=$1
 	filepath=./$filename
-	gcc -c ${filename} &> /dev/null
+	gcc -c ${filename}>/dev/null 2>&1
 	#将filename的后缀.c去掉
 	filename1="${filename%\.*}"
 	filename2=./$filename1".o"	
-	gcc $filename2 -o ${filename%\.*} &> /dev/null
+	gcc $filename2 -o ${filename%\.*}>/dev/null 2>&1
 }
 
-function inst()
+inst()
 {
 	#dest为目标,origin为待处理的文件的路径
 	dest="$2"
@@ -37,7 +37,7 @@ function inst()
                 	echo "smake: This Installfile:$origin doesn't exist!"
 			exit 1
 		else
-			install $origin $dest &> /dev/null
+			install $origin $dest
 		fi
 		shift
 		origin=$3
@@ -45,7 +45,7 @@ function inst()
 }
 
 #清理当前目录下所有的.o目标文件 同时根据用户的输入来判断删除二进制文件
-function clean(){
+clean(){
 	flag=1
 	#判断当前目录下是否有.o结尾的文件
 	if ! ls *.o>/dev/null 2>&1;then
@@ -56,7 +56,7 @@ function clean(){
 	while true
 	do
 		read -p "smake: Do you want to remove the binary file? (y/N)" msg
-		if [ $msg == "y" ];then
+		if [ $msg = "y" ];then
 			read -p "smake: Enter your binary file name:" file_name
 				#处理文件不存在的情况
 				if [ -e ./$file_name ];then
@@ -65,8 +65,8 @@ function clean(){
 				else
 					echo "Please enter an existing filename!"
 				fi
-		elif [ $msg == "N" ];then
-			if [ "$flag" == "0" ];then
+		elif [ $msg = "N" ];then
+			if [ "$flag" = "0" ];then
 				echo "smake: Nothion to be done heare, exiting..."
 			fi
 			break
@@ -78,7 +78,7 @@ function clean(){
 }
 
 #输出帮助
-function gethelp()
+gethelp()
 {
 	echo -e "smake usage:\n   smake compile\n   smake install DESTINATION INSTALLFILELIST\n   smake clean"
 }
