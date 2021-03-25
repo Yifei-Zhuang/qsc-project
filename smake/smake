@@ -10,20 +10,13 @@ compile_ErrorHander()
 #根据输入的文件名生成目标文件和可执行文件
 comp()
 {
-#	filename=$1
-#	filepath=./$filename
-#	gcc -c ${filename}>/dev/null 2>&1
-#	#将filename的后缀.c去掉
-#	filename1="${filename%\.*}"
-#	filename2=./$filename1".o"	
-#	gcc $filename2 -o ${filename%\.*}>/dev/null 2>&1
-	find . -name "*.c" -exec gcc -c {} \;>/dev/null 2>&1
-#	find . -name "*.o" -exec gcc -o {} \{{}%\.*\} \;>/dev/null 2>&1
-#	find . -name "*.o" -exec a={} \; -exec echo $a \; -exec b=${a:2:$\(#a\)-4)} \; -exec echo "$b" \;
-	for filename in `ls *.o`
-		do
-			gcc $filename -o ${filename%.*}>/dev/null 2>&1
-		done
+#使用find命令查找并对当前目录下所有的.c文件进行编译 生成目标文件
+        find . -name "*.c" -exec gcc -c {} \;>/dev/null 2>&1
+#使用for循环和ls命令遍历目标文件 并进行编译
+        for filename in `ls *.o`
+                do
+                        gcc $filename -o ${filename%.*}>/dev/null 2>&1
+                done
 }
 
 inst()
