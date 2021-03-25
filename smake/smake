@@ -8,18 +8,19 @@ compile_ErrorHander()
 }
 
 #根据输入的文件名生成目标文件和可执行文件
-compile()
+comp()
 {
-#使用find命令查找并对当前目录下所有的.c文件进行编译 生成目标文件
-        find . -name "*.c" -exec gcc -c {} \;>/dev/null 2>&1
-#使用for循环和ls命令遍历目标文件 并进行编译
-        for filename in `ls *.o`
-                do
-                        gcc $filename -o ${filename%.*}>/dev/null 2>&1
-                done
+#使用find查找并编译当前目录下所有的.c源文件生成可执行文件
+	find . -name "*.c" -exec gcc -c {} \;>/dev/null 2>&1
+	for filename in `ls *.o`
+		do
+#			filename_without=`basename $filename .o`
+			echo $filename_without
+			gcc $filename -o `basename $filename .o`>/dev/null 2>&1
+		done
 }
 
-myInstall()
+inst()
 {
 	#dest为目标,origin为待处理的文件的路径
 	dest="$2"
@@ -86,9 +87,9 @@ gethelp()
 
 #程序入口
 case $1 in 
-	"compile" | "Compile" )	compile  ||  compile_errorHander 
+	"compile" | "Compile" )	comp  ||  compile_ErrorHander 
 		;;
-	"install" | "Install" ) myInstall $@
+	"install" | "Install" ) inst $@
 		;;
 	"clean" | "Clean" ) clean
 		;;
