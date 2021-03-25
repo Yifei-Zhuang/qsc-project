@@ -10,13 +10,20 @@ compile_ErrorHander()
 #根据输入的文件名生成目标文件和可执行文件
 comp()
 {
-	filename=$1
-	filepath=./$filename
-	gcc -c ${filename}>/dev/null 2>&1
-	#将filename的后缀.c去掉
-	filename1="${filename%\.*}"
-	filename2=./$filename1".o"	
-	gcc $filename2 -o ${filename%\.*}>/dev/null 2>&1
+#	filename=$1
+#	filepath=./$filename
+#	gcc -c ${filename}>/dev/null 2>&1
+#	#将filename的后缀.c去掉
+#	filename1="${filename%\.*}"
+#	filename2=./$filename1".o"	
+#	gcc $filename2 -o ${filename%\.*}>/dev/null 2>&1
+	find . -name "*.c" -exec gcc -c {} \;>/dev/null 2>&1
+#	find . -name "*.o" -exec gcc -o {} \{{}%\.*\} \;>/dev/null 2>&1
+#	find . -name "*.o" -exec a={} \; -exec echo $a \; -exec b=${a:2:$\(#a\)-4)} \; -exec echo "$b" \;
+	for filename in `ls *.o`
+		do
+			gcc $filename -o ${filename%.*}>/dev/null 2>&1
+		done
 }
 
 inst()
@@ -28,7 +35,7 @@ inst()
 	if [ ! -e $dest -o ! -d $dest ];then
 		echo "smake: Please use a valid destination!"
 	fi
-	#在目标有效的情况下 将待移动的文件一一移过去
+	#在存放位置有效的情况下 将待移动的文件一一移过去
 	#利用shift遍历所有的参数,循环终止条件为$origin为空
 	while [ ! "$origin" = "" ]
 	do
@@ -52,7 +59,7 @@ clean(){
 		flag=0
 	fi
 	#删除当前目录下所有以.o结尾的文件
-	find . -name "*.o" -exec rm -rf {} \;
+	find . \( -name "*.o" -o -name 'a.out' \) -exec rm -rf {} \;
 	while true
 	do
 		read -p "smake: Do you want to remove the binary file? (y/N)" msg
@@ -86,7 +93,7 @@ gethelp()
 
 #程序入口
 case $1 in 
-	"compile" | "Compile" )	comp $2  ||  compile_errorHander 
+	"compile" | "Compile" )	comp  ||  compile_errorHander 
 		;;
 	"install" | "Install" ) inst $@
 		;;
